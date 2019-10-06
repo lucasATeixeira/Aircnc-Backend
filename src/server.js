@@ -1,6 +1,8 @@
 const express = require("express");
 const routes = require("./routes");
 const mongoose = require("mongoose");
+const path = require("path");
+const cors = require("cors");
 
 class App {
   constructor() {
@@ -17,9 +19,16 @@ class App {
       useUnifiedTopology: true
     });
   }
-  middlewares() {}
+  middlewares() {
+    this.express.use(cors());
+    this.express.use(express.json());
+  }
 
   routes() {
+    this.express.use(
+      "/files",
+      express.static(path.resolve(__dirname, "..", "uploads"))
+    );
     this.express.use(routes);
   }
 }
